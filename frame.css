@@ -1,0 +1,319 @@
+/*
+ * the design frame — the dress.
+ *
+ * The one header, footer, type and button style every taNr.co surface
+ * wears (the House domain, 2026-09-28: "the shop's tokens, buttons and
+ * header become the site's frame"; ruled a shared package 2026-10-12:
+ * "Let's call it design frame. It can take a dark scheme"). Values are
+ * the tanr.co store's own, carried verbatim from house/app/globals.css
+ * "the frame" as it stood at 03f2dd7. The TOKENS ride :root (tokens.css,
+ * generated from tokens.json); the DRESS below applies under .frame —
+ * the header, the footer, a page's own <main class="frame"> or body.
+ *
+ * A site's interiors keep their own language inside the frame (the
+ * book's ground and type, the dashboard's lane colours, out loud's
+ * accent) and never import their rules here. Two variables are the
+ * site's to set, never the frame's: --font-rubik and --font-space-mono
+ * (next/font on <body>), --z-header (the site's stacking contract; 2 by
+ * default) and --bar-h (a fixed bar the footer clears; 0 by default).
+ */
+@import "./tokens.css";
+
+* {
+  box-sizing: border-box;
+}
+/* Anchors land clear of the sticky header. */
+html {
+  scroll-padding-top: var(--header-h);
+}
+/* The page slot: <body> is one column at least a viewport tall, and the
+   element right after the header grows to fill what the header and the
+   footer leave — a short page shows its footer at the foot of the first
+   screen. The header, the shell and the footer stay DIRECT children of
+   <body>. The shell takes the full width: a flex item with auto side
+   margins would otherwise shrink to its content (seen on the dashboard's
+   sign-in page, 2026-10-12). */
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+}
+body > .frame-header + * {
+  flex-grow: 1;
+  width: 100%;
+}
+
+/* the voice ------------------------------------------------------------ */
+.frame {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-frame);
+  font-size: var(--body-size);
+  line-height: var(--body-leading);
+  letter-spacing: normal;
+  text-transform: none;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+}
+.frame a {
+  color: inherit;
+  text-decoration: none;
+}
+.frame .underline {
+  text-decoration: underline;
+}
+.frame h1,
+.frame h2,
+.frame h3 {
+  font-family: var(--font-rubik), var(--font-frame);
+  font-weight: 400;
+  margin: 0;
+}
+.frame strong,
+.frame b {
+  font-weight: 500;
+}
+.frame h2.section {
+  font-size: var(--type-section);
+  line-height: 1.2;
+  margin: 56px 0 16px;
+}
+/* uppercase mono labels, the tanr.co subheading voice */
+.frame .label-mono {
+  font-family: var(--font-space-mono), var(--font-mono-stack);
+  font-size: var(--label-size);
+  letter-spacing: var(--label-tracking);
+  text-transform: uppercase;
+  font-weight: 400;
+}
+/* mono numbers that line up */
+.frame .mono {
+  font-family: var(--font-space-mono), var(--font-mono-stack);
+  font-variant-numeric: tabular-nums;
+}
+.frame .muted {
+  color: var(--muted);
+}
+.frame .small {
+  font-size: var(--nav-size);
+}
+
+/* the store's button recipe (.btn / ADD TO CART) ----------------------- */
+.frame .btn {
+  display: inline-block;
+  font-family: var(--font-frame);
+  font-weight: 700;
+  font-size: var(--button-size);
+  line-height: 1.53;
+  text-transform: uppercase;
+  letter-spacing: var(--button-tracking);
+  text-align: center;
+  padding: 15px 22px;
+  border-radius: var(--radius);
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+  cursor: pointer;
+  transition:
+    color var(--hover-ms) ease,
+    background var(--hover-ms) ease;
+}
+.frame .btn:hover {
+  background: var(--bg);
+  color: var(--ink);
+}
+/* the store's ghost — the second button beside a solid one */
+.frame .btn.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border-color: currentColor;
+}
+.frame .btn.btn-ghost:hover {
+  background: var(--ink);
+  color: var(--bg);
+  border-color: var(--ink);
+}
+/* a button with a long label and a short one: the short one on a narrow
+   phone, so the button never wraps */
+.btn .btn-short {
+  display: none;
+}
+@media (max-width: 480px) {
+  .btn .btn-long {
+    display: none;
+  }
+  .btn .btn-short {
+    display: inline;
+  }
+}
+.frame .btn:disabled,
+.frame .btn[aria-disabled="true"] {
+  opacity: 0.5;
+  cursor: default;
+}
+/* the quiet one — a text action, underlined, muted */
+.frame .quiet-button {
+  min-height: var(--tap);
+  padding: 0;
+  font: inherit;
+  font-size: var(--nav-size);
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+/* header nav text, tanr.co nav voice */
+.frame .nav-link {
+  font-family: var(--font-frame);
+  font-size: var(--nav-size);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: var(--nav-tracking);
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  cursor: pointer;
+}
+.frame .nav-link[aria-current="page"] {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* fields ----------------------------------------------------------------- */
+/* one field height and one control border on every frame surface */
+.frame .field {
+  display: block;
+  margin-top: 16px;
+}
+.frame .field > span {
+  display: block;
+  font-size: var(--nav-size);
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.frame .field input,
+.frame .field select,
+.frame .field textarea,
+.frame .input {
+  width: 100%;
+  height: var(--field-h);
+  padding: 0 14px;
+  font: inherit;
+  font-size: 1rem;
+  border: 1px solid var(--field-line);
+  border-radius: var(--radius);
+  background: var(--bg);
+  color: var(--ink);
+  outline: none;
+}
+.frame .field textarea {
+  height: auto;
+  min-height: 80px;
+  padding: 12px 14px;
+}
+.frame .field input:focus-visible,
+.frame .field select:focus-visible,
+.frame .field textarea:focus-visible,
+.frame .input:focus-visible {
+  border-color: var(--ink);
+}
+
+/* the header — the store's group-header ---------------------------------- */
+.frame-header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-header, 2);
+  background: var(--bg);
+  /* the store's bottom rule, drawn INSIDE the header's box, so the header
+     is exactly --header-h tall and a viewport fill subtracts it cleanly */
+  box-shadow: inset 0 -1px 0 var(--header-rule);
+}
+.frame-header-inner {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  grid-template-areas: "logo nav right";
+  align-items: center;
+  column-gap: 28px;
+  height: var(--header-h);
+  padding: 0 var(--gutter);
+  max-width: var(--wide-w);
+  margin-inline: auto;
+}
+.frame-logo {
+  grid-area: logo;
+}
+.frame-logo img {
+  display: block;
+  width: var(--mark-w);
+  height: auto;
+}
+.frame-nav {
+  grid-area: nav;
+  display: flex;
+  gap: 18px;
+  justify-content: flex-start;
+  align-items: center;
+  min-width: 0;
+  white-space: nowrap;
+}
+.frame-header-right {
+  grid-area: right;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.frame-where {
+  color: var(--muted);
+}
+
+/* the footer — the store's group-footer, the warm scheme ----------------- */
+.frame-footer {
+  background: var(--warm);
+  color: var(--footer-ink);
+  padding: 50px var(--gutter)
+    calc(20px + var(--bar-h, 0px) + env(safe-area-inset-bottom));
+}
+.frame-footer-inner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: var(--wide-w);
+  margin-inline: auto;
+}
+.frame-footer-mark img {
+  display: block;
+  width: var(--footer-mark-w);
+  height: auto;
+}
+
+/* a page's narrow reading column ------------------------------------------ */
+.frame .narrow {
+  max-width: var(--narrow-w);
+  margin-inline: auto;
+  padding: var(--page-top) var(--gutter) 60px;
+}
+
+/* tap targets: a small control keeps its drawn size and takes a 44px touch
+   area around its centre, so nothing on the page moves */
+.tap-44,
+.frame-logo,
+.frame .nav-link,
+.frame-footer-mark {
+  position: relative;
+}
+.tap-44::after,
+.frame-logo::after,
+.frame .nav-link::after,
+.frame-footer-mark::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100%, var(--tap));
+  height: max(100%, var(--tap));
+  transform: translate(-50%, -50%);
+}
